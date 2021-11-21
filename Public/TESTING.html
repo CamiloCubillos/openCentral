@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="/getApps" method="GET" id="myForm">
+        <input type="submit" value="Get data">
+    </form>
+    <h1>
+
+    </h1>
+
+    <script type="text/javascript">
+        let form = document.querySelector("#myForm");
+
+        form.addEventListener("submit",(e)=>{
+            e.preventDefault();
+
+            fetch('/getApps',{
+                method:"POST",
+                body: "gimp"
+            }).then(function(response) {
+                return response.json();
+            }).then(function(data) {
+                console.log(data);
+            }).catch(function(error){
+                throw error;
+            })
+        })
+    </script>
+</body>
+</html>
