@@ -128,6 +128,7 @@ let obtainArrayFromJSON = async function(url)
     .then(res => res.json(url));
 }
 
+<<<<<<< HEAD
 // Validates id the arrays is not null and not empty and if the prop is valid
 let validateArrayAndObject = function(array, keyPropName)
 {
@@ -148,6 +149,41 @@ let validateArrayAndObject = function(array, keyPropName)
 
     console.log("Property does not exist.")
     return false;
+=======
+    */
+
+  sortByRelevance(array, searchKey) {
+    let exactNameFoundApps = [];
+    let nameFoundApps = [];
+    let exactAuthorFoundApps = [];
+    let authorFoundApps = [];
+    let descriptionFoundApps = [];
+    let keyWordFoundApps = [];
+
+    for (let index = 0; index < array.length; index++) {
+      console.log(array[index]);
+      if (array[index].nombre == searchKey) {
+        exactNameFoundApps.push(array[index]);
+      } else if (array[index].autor == searchKey) {
+        exactAuthorFoundApps.push(array[index]);
+      } else if (array[index].nombre.substring(searchKey)) {
+        nameFoundApps.push(array[index]);
+      } else if (array[index].autor.substring(searchKey)) {
+        authorFoundApps.push(array[index]);
+      } else if (array[index].descripcion.substring(searchKey)) {
+        descriptionFoundApps.push(array[index]);
+      } else if (array[index].keywords.substring(searchKey)) {
+        keyWordFoundApps.push(array[index]);
+      }
+    }
+
+    return exactNameFoundApps
+      .concat(nameFoundApps)
+      .concat(exactAuthorFoundApps)
+      .concat(authorFoundApps)
+      .concat(descriptionFoundApps)
+      .concat(keyWordFoundApps);
+>>>>>>> feature_searchSystem
   }
 }
 

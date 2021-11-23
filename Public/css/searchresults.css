@@ -1,0 +1,10 @@
+.result-card{
+    height:250px;
+}
+
+.result-card__icon{
+    width: 100%;
+    height: 250px;
+    object-fit: contain;
+    object-position: center center;
+}
