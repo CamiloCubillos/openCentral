@@ -2,7 +2,6 @@ const express = require("express");
 const app = express();
 const bp = require("body-parser");
 const bdGestor = require("mysql");
-const OpenCentralAPI = require("./Routes/api.js");
 
 // BD config
 
@@ -30,8 +29,40 @@ app.get("/searchresults", (req, res) => {
   res.sendFile(__dirname + "/Public/searchresults.html");
 });
 
-app.get("/TESTING", (req, res) => {
-  res.sendFile(__dirname + "/Public/TESTING.html");
+// Generate random data. BE CAREFUL AND REQUEST THIS ROUTE ONLY WHEN IT IS NECESSARY
+
+app.get("/sdadasdasdas", (req, res) => {
+  let bdConnection = bdGestor.createConnection(bdConfig);
+
+  bdConnection.connect((error) => {
+    if (error) {
+      bdConnection.end();
+      res.end();
+      throw error;
+    }
+  });
+
+  console.log("Iniciando insercion de datos");
+
+  for (let i = 0; i < 105; i++) {
+    bdConnection.query(
+      `INSERT INTO \`apps\` VALUES(NULL,'TESTING-NAME','TESTING-AUTOR','TESTING-DESCRIPTION',5,'TESTING-IMAGE','TESTING-KEYWORDS','TESTING-MIRRORS','TESTING-VERSION')`,
+      (error, result) => {
+        if (error) {
+          bdConnection.end();
+          res.end();
+          throw error;
+        } else {
+          console.log("Query ejecutado");
+        }
+      }
+    );
+  }
+
+  console.log("Inserción de datos terminada");
+
+  bdConnection.end();
+  res.end();
 });
 
 // Retrieve all related to search's keywords apps from BD
@@ -57,7 +88,6 @@ app.post("/getApps", (req, res) => {
         res.end();
         throw error;
       } else {
-        console.log(result[0]);
         res.send(JSON.stringify(result));
       }
     }
