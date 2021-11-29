@@ -29,19 +29,20 @@ class OCSorting {
     let authorFoundApps = [];
     let descriptionFoundApps = [];
     let keyWordFoundApps = [];
+    searchKey = searchKey.toLowerCase();
 
     for (let index = 0; index < array.length; index++) {
-      if (array[index].nombre == searchKey) {
+      if (array[index].nombre.toLowerCase() == searchKey) {
         exactNameFoundApps.push(array[index]);
-      } else if (array[index].autor == searchKey) {
+      } else if (array[index].autor.toLowerCase() == searchKey) {
         exactAuthorFoundApps.push(array[index]);
-      } else if (array[index].nombre.substring(searchKey)) {
+      } else if (array[index].nombre.toLowerCase().includes(searchKey)) {
         nameFoundApps.push(array[index]);
-      } else if (array[index].autor.substring(searchKey)) {
+      } else if (array[index].autor.toLowerCase().includes(searchKey)) {
         authorFoundApps.push(array[index]);
-      } else if (array[index].descripcion.substring(searchKey)) {
+      } else if (array[index].descripcion.toLowerCase().includes(searchKey)) {
         descriptionFoundApps.push(array[index]);
-      } else if (array[index].keywords.substring(searchKey)) {
+      } else if (array[index].keywords.toLowerCase().includes(searchKey)) {
         keyWordFoundApps.push(array[index]);
       }
     }
@@ -153,15 +154,22 @@ class OCSorting {
   // Executes the FILTERRING itself
   applyFilter(array, keyPropName, value) {
     let index = this.binarySearch(array, keyPropName, value);
+    console.log("ApplyFilter starts");
+    console.log(keyPropName);
+    console.log(value);
 
     let filteredArray = [];
-    while (index < array.length && array[index][keyPropName] === value) {
+
+    while (index < array.length) {
       // For NAME filtering
       // while(index < array.length && array[index][keyPropName] >= value) { // For AVG SCORE > 3 filtering
-      filteredArray.push(array[index]);
+      if (
+        array[index][keyPropName].toLowerCase().includes(value.toLowerCase())
+      ) {
+        filteredArray.push(array[index]);
+      }
       index++;
     }
-
     return filteredArray;
   }
 }

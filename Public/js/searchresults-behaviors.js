@@ -113,6 +113,7 @@ function search(searchKey) {
 function setListeners() {
   let searchFormInput = document.querySelector("#searchForm__input");
   let searchFormButton = document.querySelector("#searchForm__button");
+  let filterButton = document.querySelector("#btn_filter");
 
   let sortByNameButton = document.querySelector("#sortByName");
 
@@ -135,6 +136,24 @@ function setListeners() {
       ocPages.generatePages();
       render(searchKey);
     }
+  });
+
+  filterButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    let keyFilter = document.querySelector("#filter-key").value;
+    let filter = document.querySelector("#filter").value;
+    let searchKey = document.querySelector(
+      "#results-section__searchKey"
+    ).innerHTML;
+
+    let arrayFiltered = ocSorting.applyFilter(
+      ocPages.items.data,
+      keyFilter,
+      filter
+    );
+    ocPages.items.data = arrayFiltered;
+    ocPages.generatePages();
+    render(searchKey);
   });
 }
 

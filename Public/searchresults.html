@@ -13,13 +13,25 @@
         <div class="row  vh-100">
             <div class="col-3 bg-primary">
                 <form class="p-4" id="searchForm">
-                    <input type="text" id="searchForm__input">
-                    <button class="btn btn-secondary" id="searchForm__button">search</button>
-                    <br>
-                    <br>
-                    <br>
-                    
-                    <button class="btn btn-secondary" id="sortByName">Ordenar por orden alfabetico</button>
+                    <div class="d-flex justify-content-center">
+                        <input type="text" id="searchForm__input">
+                        <button class="btn btn-secondary" id="searchForm__button">search</button>
+                    </div>
+                    <div class="d-flex justify-content-center mt-5">
+                        <button class="btn btn-secondary" id="sortByName">Ordenar por orden alfabetico</button>
+                    </div>
+                    <h1 class="h1 text-center fw-bold text-light mt-5">Filtrar</h1>
+                    <div class="d-flex justify-content-around">
+                        <select name="filter-key" id="filter-key">
+                            <option value="nombre">Nombre</option>
+                            <option value="autor">Autor</option>
+                            <option value="descripcion">Descripción</option>
+                        </select>
+                        <input type="text" id="filter" placeholder="Palabra clave">
+                    </div>
+                    <div class="d-flex justify-content-center mt-3">
+                        <button class="btn btn-secondary" id="btn_filter">Filtrar por palabra clave</button>
+                    </div>
                 </form>
             </div>
 
