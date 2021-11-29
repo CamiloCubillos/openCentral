@@ -156,11 +156,7 @@ class OCPageCollection {
     this.pages = new OCList();
 
     this.fillItems(_items);
-    this.dividePages();
-
-    this.currentPage = this.pages.data[0];
-    this.beforePages = new OCStack();
-    this.afterPages = new OCQueue(this.pages.slice(1, this.pages.size()));
+    this.generatePages();
   }
 
   fillItems(_items) {
@@ -169,7 +165,8 @@ class OCPageCollection {
     }
   }
 
-  dividePages() {
+  generatePages() {
+    this.pages.clear();
     let currentPageItems = 0;
     let currentPage = new OCList();
 
@@ -184,15 +181,16 @@ class OCPageCollection {
       }
     }
 
-    console.log("CURRENT PAGE IS EMPTY" + currentPage.isEmpty());
-    console.log(currentPage);
-
     if (!currentPage.isEmpty()) {
       let currentPageClone = currentPage.cloneJSON();
       currentPage.clear();
       this.pages.push(currentPageClone);
       currentPageItems = 0;
     }
+
+    this.currentPage = this.pages.data[0];
+    this.beforePages = new OCStack();
+    this.afterPages = new OCQueue(this.pages.slice(1, this.pages.size()));
   }
 
   next() {
@@ -210,129 +208,127 @@ class OCPageCollection {
       this.currentPage = this.beforePages.unstack();
     }
   }
-
-  print() {
-    console.log(this.pages);
-  }
 }
 
-let itemData = [
-  {
-    id: 1,
-    first_name: "Leola",
-    last_name: "Hallmark",
-    email: "lhallmark0@purevolume.com",
-    gender: "Genderfluid",
-    ip_address: "90.86.230.146",
-  },
-  {
-    id: 2,
-    first_name: "Calla",
-    last_name: "Klimontovich",
-    email: "cklimontovich1@google.es",
-    gender: "Bigender",
-    ip_address: "153.67.159.107",
-  },
-  {
-    id: 3,
-    first_name: "Ian",
-    last_name: "Folbig",
-    email: "ifolbig2@shareasale.com",
-    gender: "Bigender",
-    ip_address: "100.194.241.50",
-  },
-  {
-    id: 4,
-    first_name: "Reilly",
-    last_name: "Sterman",
-    email: "rsterman3@utexas.edu",
-    gender: "Polygender",
-    ip_address: "195.199.173.69",
-  },
-  {
-    id: 5,
-    first_name: "Oralie",
-    last_name: "Gilhouley",
-    email: "ogilhouley4@upenn.edu",
-    gender: "Female",
-    ip_address: "120.49.28.17",
-  },
-  {
-    id: 6,
-    first_name: "Olenka",
-    last_name: "Gowman",
-    email: "ogowman5@163.com",
-    gender: "Female",
-    ip_address: "114.232.148.253",
-  },
-  {
-    id: 7,
-    first_name: "Judie",
-    last_name: "Lampe",
-    email: "jlampe6@amazon.com",
-    gender: "Non-binary",
-    ip_address: "15.247.159.167",
-  },
-  {
-    id: 8,
-    first_name: "Ira",
-    last_name: "Silvers",
-    email: "isilvers7@uol.com.br",
-    gender: "Bigender",
-    ip_address: "170.204.171.155",
-  },
-  {
-    id: 9,
-    first_name: "Chrisy",
-    last_name: "Lomb",
-    email: "clomb8@bluehost.com",
-    gender: "Polygender",
-    ip_address: "92.103.153.118",
-  },
-  {
-    id: 10,
-    first_name: "Irma",
-    last_name: "Dales",
-    email: "idales9@canalblog.com",
-    gender: "Polygender",
-    ip_address: "228.37.249.136",
-  },
-  {
-    id: 11,
-    first_name: "Irma",
-    last_name: "Dales",
-    email: "idales9@canalblog.com",
-    gender: "Polygender",
-    ip_address: "228.37.249.136",
-  },
-  {
-    id: 12,
-    first_name: "Irma",
-    last_name: "Dales",
-    email: "idales9@canalblog.com",
-    gender: "Polygender",
-    ip_address: "228.37.249.136",
-  },
-  {
-    id: 13,
-    first_name: "Irma",
-    last_name: "Dales",
-    email: "idales9@canalblog.com",
-    gender: "Polygender",
-    ip_address: "228.37.249.136",
-  },
-  {
-    id: 14,
-    first_name: "Irma",
-    last_name: "Dales",
-    email: "idales9@canalblog.com",
-    gender: "Polygender",
-    ip_address: "228.37.249.136",
-  },
-];
+// let itemData = [
+//   {
+//     id: 1,
+//     first_name: "Leola",
+//     last_name: "Hallmark",
+//     email: "lhallmark0@purevolume.com",
+//     gender: "Genderfluid",
+//     ip_address: "90.86.230.146",
+//   },
+//   {
+//     id: 2,
+//     first_name: "Calla",
+//     last_name: "Klimontovich",
+//     email: "cklimontovich1@google.es",
+//     gender: "Bigender",
+//     ip_address: "153.67.159.107",
+//   },
+//   {
+//     id: 3,
+//     first_name: "Ian",
+//     last_name: "Folbig",
+//     email: "ifolbig2@shareasale.com",
+//     gender: "Bigender",
+//     ip_address: "100.194.241.50",
+//   },
+//   {
+//     id: 4,
+//     first_name: "Reilly",
+//     last_name: "Sterman",
+//     email: "rsterman3@utexas.edu",
+//     gender: "Polygender",
+//     ip_address: "195.199.173.69",
+//   },
+//   {
+//     id: 5,
+//     first_name: "Oralie",
+//     last_name: "Gilhouley",
+//     email: "ogilhouley4@upenn.edu",
+//     gender: "Female",
+//     ip_address: "120.49.28.17",
+//   },
+//   {
+//     id: 6,
+//     first_name: "Olenka",
+//     last_name: "Gowman",
+//     email: "ogowman5@163.com",
+//     gender: "Female",
+//     ip_address: "114.232.148.253",
+//   },
+//   {
+//     id: 7,
+//     first_name: "Judie",
+//     last_name: "Lampe",
+//     email: "jlampe6@amazon.com",
+//     gender: "Non-binary",
+//     ip_address: "15.247.159.167",
+//   },
+//   {
+//     id: 8,
+//     first_name: "Ira",
+//     last_name: "Silvers",
+//     email: "isilvers7@uol.com.br",
+//     gender: "Bigender",
+//     ip_address: "170.204.171.155",
+//   },
+//   {
+//     id: 9,
+//     first_name: "Chrisy",
+//     last_name: "Lomb",
+//     email: "clomb8@bluehost.com",
+//     gender: "Polygender",
+//     ip_address: "92.103.153.118",
+//   },
+//   {
+//     id: 10,
+//     first_name: "Irma",
+//     last_name: "Dales",
+//     email: "idales9@canalblog.com",
+//     gender: "Polygender",
+//     ip_address: "228.37.249.136",
+//   },
+//   {
+//     id: 11,
+//     first_name: "Irma",
+//     last_name: "Dales",
+//     email: "idales9@canalblog.com",
+//     gender: "Polygender",
+//     ip_address: "228.37.249.136",
+//   },
+//   {
+//     id: 12,
+//     first_name: "Irma",
+//     last_name: "Dales",
+//     email: "idales9@canalblog.com",
+//     gender: "Polygender",
+//     ip_address: "228.37.249.136",
+//   },
+//   {
+//     id: 13,
+//     first_name: "Irma",
+//     last_name: "Dales",
+//     email: "idales9@canalblog.com",
+//     gender: "Polygender",
+//     ip_address: "228.37.249.136",
+//   },
+//   {
+//     id: 14,
+//     first_name: "Irma",
+//     last_name: "Dales",
+//     email: "idales9@canalblog.com",
+//     gender: "Polygender",
+//     ip_address: "228.37.249.136",
+//   },
+// ];
 
-let itemDataList = new OCList();
+// let itemDataList = new OCList();
 
-for (let i = 0; i < itemData.length; i++) {
-  itemDataList.push(itemData[i]);
-}
+// for (let i = 0; i < itemData.length; i++) {
+//   itemDataList.push(itemData[i]);
+// }
+// let sortedArray = ocSorting.quickSort(itemDataList.data, "last_name");
+// console.log(sortedArray);
