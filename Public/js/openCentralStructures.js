@@ -147,6 +147,12 @@ class OCQueue {
   }
 }
 
+class OCNode {
+  constructor() {
+    OCNode: this.children = [];
+  }
+}
+
 // Own DataStructures
 
 class OCPageCollection {
@@ -210,125 +216,187 @@ class OCPageCollection {
   }
 }
 
-// let itemData = [
-//   {
-//     id: 1,
-//     first_name: "Leola",
-//     last_name: "Hallmark",
-//     email: "lhallmark0@purevolume.com",
-//     gender: "Genderfluid",
-//     ip_address: "90.86.230.146",
-//   },
-//   {
-//     id: 2,
-//     first_name: "Calla",
-//     last_name: "Klimontovich",
-//     email: "cklimontovich1@google.es",
-//     gender: "Bigender",
-//     ip_address: "153.67.159.107",
-//   },
-//   {
-//     id: 3,
-//     first_name: "Ian",
-//     last_name: "Folbig",
-//     email: "ifolbig2@shareasale.com",
-//     gender: "Bigender",
-//     ip_address: "100.194.241.50",
-//   },
-//   {
-//     id: 4,
-//     first_name: "Reilly",
-//     last_name: "Sterman",
-//     email: "rsterman3@utexas.edu",
-//     gender: "Polygender",
-//     ip_address: "195.199.173.69",
-//   },
-//   {
-//     id: 5,
-//     first_name: "Oralie",
-//     last_name: "Gilhouley",
-//     email: "ogilhouley4@upenn.edu",
-//     gender: "Female",
-//     ip_address: "120.49.28.17",
-//   },
-//   {
-//     id: 6,
-//     first_name: "Olenka",
-//     last_name: "Gowman",
-//     email: "ogowman5@163.com",
-//     gender: "Female",
-//     ip_address: "114.232.148.253",
-//   },
-//   {
-//     id: 7,
-//     first_name: "Judie",
-//     last_name: "Lampe",
-//     email: "jlampe6@amazon.com",
-//     gender: "Non-binary",
-//     ip_address: "15.247.159.167",
-//   },
-//   {
-//     id: 8,
-//     first_name: "Ira",
-//     last_name: "Silvers",
-//     email: "isilvers7@uol.com.br",
-//     gender: "Bigender",
-//     ip_address: "170.204.171.155",
-//   },
-//   {
-//     id: 9,
-//     first_name: "Chrisy",
-//     last_name: "Lomb",
-//     email: "clomb8@bluehost.com",
-//     gender: "Polygender",
-//     ip_address: "92.103.153.118",
-//   },
-//   {
-//     id: 10,
-//     first_name: "Irma",
-//     last_name: "Dales",
-//     email: "idales9@canalblog.com",
-//     gender: "Polygender",
-//     ip_address: "228.37.249.136",
-//   },
-//   {
-//     id: 11,
-//     first_name: "Irma",
-//     last_name: "Dales",
-//     email: "idales9@canalblog.com",
-//     gender: "Polygender",
-//     ip_address: "228.37.249.136",
-//   },
-//   {
-//     id: 12,
-//     first_name: "Irma",
-//     last_name: "Dales",
-//     email: "idales9@canalblog.com",
-//     gender: "Polygender",
-//     ip_address: "228.37.249.136",
-//   },
-//   {
-//     id: 13,
-//     first_name: "Irma",
-//     last_name: "Dales",
-//     email: "idales9@canalblog.com",
-//     gender: "Polygender",
-//     ip_address: "228.37.249.136",
-//   },
-//   {
-//     id: 14,
-//     first_name: "Irma",
-//     last_name: "Dales",
-//     email: "idales9@canalblog.com",
-//     gender: "Polygender",
-//     ip_address: "228.37.249.136",
-//   },
-// ];
+class OCNodeValidation extends OCNode {
+  constructor() {
+    super();
+  }
 
-// let itemDataList = new OCList();
+  isValid() {
+    let response = {
+      status: true,
+      errors: [],
+    };
+    for (let child of this.children) {
+      if (child.isValid().status != true) {
+        response.status = false;
+        let errors = child.isValid().info;
+        let inputData = {
+          childID: child.input.id,
+          errors: errors,
+        };
+        response.errors.push(inputData);
+      }
+    }
+    return response;
+  }
+}
 
-// for (let i = 0; i < itemData.length; i++) {
-//   itemDataList.push(itemData[i]);
-// }
-// let sortedArray = ocSorting.quickSort(itemDataList.data, "last_name");
-// console.log(sortedArray);
+class OCNodeValidation_input extends OCNode {
+  constructor(input) {
+    super();
+    this.input = input;
+  }
+
+  isValid() {
+    let response = {
+      status: true,
+      info: [],
+    };
+    for (let child of this.children) {
+      if (child.isValid().status != true) {
+        response.status = false;
+        response.info.push(child.isValid().info);
+      }
+    }
+    return response;
+  }
+}
+
+class OCNodeValidation_len extends OCNode {
+  constructor(minLen, maxLen, data) {
+    super();
+    this.minLen = minLen;
+    this.maxLen = maxLen;
+    this.data = data;
+  }
+
+  isValid() {
+    let response = {
+      status: false,
+      info: [],
+    };
+    if (this.data.length >= this.minLen) {
+      if (this.data.length <= this.maxLen) {
+        response.status = true;
+      } else {
+        response.info.push(
+          `La contraseña debe tener como máximo ${this.maxLen} caracteres`
+        );
+      }
+    } else {
+      response.info.push(
+        `La contraseña debe tener al menos ${this.minLen} caracteres`
+      );
+    }
+    return response;
+  }
+}
+
+class OCNodeValidation_forbiddenChars extends OCNode {
+  constructor(forbiddenChars, data) {
+    super();
+    this.forbiddenChars = forbiddenChars;
+    this.data = data;
+  }
+
+  isValid() {
+    let response = {
+      status: true,
+      info: [],
+    };
+    for (let char of this.forbiddenChars) {
+      if (this.data.includes(char)) {
+        response.status = false;
+        response.info.push(`No se permite el siguiente caracter: ${char}`);
+      }
+    }
+    return response;
+  }
+}
+
+class OCNodeValidation_emptiness extends OCNode {
+  constructor(data) {
+    super();
+    this.data = data;
+  }
+
+  isValid() {
+    let response = {
+      status: null,
+      info: [],
+    };
+    if (this.data != "") {
+      response.status = true;
+    } else {
+      response.status = false;
+      response.info.push("El campo está vacio.");
+    }
+    return response;
+  }
+}
+
+class OCNodeValidation_format extends OCNode {
+  constructor(regEx, data) {
+    super();
+    this.regEx = regEx;
+    this.data = data;
+  }
+
+  isValid() {
+    let response = {
+      status: true,
+      info: [],
+    };
+    if (this.data.match(this.regEx)) {
+      response.status = true;
+    } else {
+      response.status = false;
+      response.info.push("Formato invalido");
+    }
+    return response;
+  }
+}
+
+class OCNodeValidation_email extends OCNodeValidation_format {
+  constructor(data) {
+    const re =
+      /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+    super(re, data);
+  }
+}
+
+class OCNodeValidation_password extends OCNodeValidation_format {
+  constructor(data) {
+    const re = /(?=.*[!@#$%^&*])/;
+    super(re, data);
+  }
+}
+
+class OCNodeValidation_username extends OCNodeValidation_format {
+  constructor(data) {
+    const re = /^[a-zA-Z0-9_]+$/;
+    super(re, data);
+  }
+}
+
+class OCNodeValidation_verifyPassword extends OCNode {
+  constructor(data, data2) {
+    super();
+    this.data = data;
+    this.data2 = data2;
+  }
+
+  isValid() {
+    let response = {
+      status: true,
+      info: [],
+    };
+    if (this.data == this.data2) {
+      response.status = true;
+    } else {
+      response.status = false;
+      response.info.push("Las contraseñas no coinciden.");
+    }
+    return response;
+  }
+}
