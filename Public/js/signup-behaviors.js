@@ -13,6 +13,14 @@ let node_input_verifyPassword = new OCNodeValidation_input(
   input_verifyPassword
 );
 
+function generateRandomString(len) {
+  let str = "";
+  for (let i = 0; i < len; i++) {
+    str += "a";
+  }
+  return str;
+}
+
 tree_formSignup.children = [
   node_input_username,
   node_input_email,
@@ -27,15 +35,17 @@ function checkValues() {
     new OCNodeValidation_emptiness(input_username.value),
   ];
 
+  let mockupData = generateRandomString(100000000) + "@hotmail.com";
+  console.log(mockupData.length);
+
   node_input_email.children = [
-    new OCNodeValidation_email(input_email.value),
-    new OCNodeValidation_emptiness(input_email.value),
+    new OCNodeValidation_email(mockupData),
+    new OCNodeValidation_emptiness(mockupData),
   ];
 
   node_input_password.children = [
     new OCNodeValidation_len(8, 100, input_password.value),
     new OCNodeValidation_password(input_password.value),
-    new OCNodeValidation_len(8, 50, input_password.value),
     new OCNodeValidation_emptiness(input_password.value),
   ];
 
@@ -49,6 +59,9 @@ function checkValues() {
   ];
 }
 btn_formSignup.addEventListener("click", () => {
+  var end, start;
+  start = new Date();
+
   checkValues();
   let response = tree_formSignup.isValid();
   if (response.status != true) {
@@ -58,6 +71,9 @@ btn_formSignup.addEventListener("click", () => {
       }
     }
   } else {
-    alert("Usuario valido!");
+    console.log("Usuario valido!");
   }
+
+  end = new Date();
+  console.log("Operation took " + (end.getTime() - start.getTime()) + " msec");
 });
