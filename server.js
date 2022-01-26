@@ -29,6 +29,18 @@ app.get("/searchresults", (req, res) => {
   res.sendFile(__dirname + "/Public/searchresults.html");
 });
 
+app.get("/index", (req, res) => {
+  res.sendFile(__dirname + "/Public/index.html");
+});
+
+app.get("/login", (req, res) => {
+  res.sendFile(__dirname + "/Public/login.html");
+});
+
+app.get("/signup", (req, res) => {
+  res.sendFile(__dirname + "/Public/signup.html");
+});
+
 // Generate random data. BE CAREFUL AND REQUEST THIS ROUTE ONLY WHEN IT IS NECESSARY
 
 app.get("/sdadasdasdas", (req, res) => {
@@ -94,6 +106,64 @@ app.post("/getApps", (req, res) => {
   );
 
   bdConnection.end();
+});
+
+// Signup users
+
+app.post("/signupUser", (req, res) => {
+  let bdConnection = bdGestor.createConnection(bdConfig);
+
+  bdConnection.connect((error) => {
+    if (error) {
+      bdConnection.end();
+      res.end();
+      throw error;
+    }
+  });
+
+  bdConnection.query(
+    `INSERT INTO \`usuarios\` VALUES(NULL,"${req.body.username}","${req.body.username}","${req.body.email}",0,"${req.body.password}","")`,
+    (error) => {
+      if (error) {
+        bdConnection.end();
+        res.sendStatus(500);
+        res.end();
+        throw error;
+      } else {
+        res.sendStatus(200);
+      }
+    }
+  );
+
+  bdConnection.end();
+});
+
+// Login users
+
+app.post("/loginUser", (req, res) => {
+  console.log(req.body);
+  let bdConnection = bdGestor.createConnection(bdConfig);
+
+  bdConnection.connect((error) => {
+    if (error) {
+      bdConnection.end();
+      res.sendStatus(500);
+      res.end();
+    } else {
+      let sqlQuery = `SELECT COUNT(*) AS total FROM \`usuarios\` WHERE username="${req.body.username}" AND password="${req.body.password}"`;
+      bdConnection.query(sqlQuery, (error, result) => {
+        if (result[0].total != 1) {
+          bdConnection.end();
+          res.sendStatus(201);
+          res.end();
+        } else {
+          res.sendStatus(200);
+          bdConnection.end();
+          res.end();
+        }
+      });
+    }
+  });
 });
 
 //404 route (SIEMPRE MANTENER ESTA RUTA COMO LA ULTIMA EN CONSULTAR)

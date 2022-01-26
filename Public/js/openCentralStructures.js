@@ -280,12 +280,12 @@ class OCNodeValidation_len extends OCNode {
         response.status = true;
       } else {
         response.info.push(
-          `La contraseña debe tener como máximo ${this.maxLen} caracteres`
+          `El campo debe tener como máximo ${this.maxLen} caracteres`
         );
       }
     } else {
       response.info.push(
-        `La contraseña debe tener al menos ${this.minLen} caracteres`
+        `El campo debe tener al menos ${this.minLen} caracteres`
       );
     }
     return response;
