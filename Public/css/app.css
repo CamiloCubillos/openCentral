@@ -1,0 +1,19 @@
+form{
+    min-height: 500px;
+}
+
+#btn_formLogin{
+    min-height: 70px;
+}
+
+.danger-status{
+    color: rgb(161, 27, 27);
+}
+
+.success-status{
+    color: rgb(0, 143, 0);
+}
+
+.xtag:hover{
+    cursor: pointer;
+}

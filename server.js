@@ -41,6 +41,10 @@ app.get("/signup", (req, res) => {
   res.sendFile(__dirname + "/Public/signup.html");
 });
 
+app.get("/appupload", (req, res) => {
+  res.sendFile(__dirname + "/Public/app.html");
+});
+
 // Generate random data. BE CAREFUL AND REQUEST THIS ROUTE ONLY WHEN IT IS NECESSARY
 
 app.get("/sdadasdasdas", (req, res) => {
@@ -160,6 +164,50 @@ app.post("/loginUser", (req, res) => {
           res.sendStatus(200);
           bdConnection.end();
           res.end();
+        }
+      });
+    }
+  });
+});
+
+app.post("/uploadAppPetition", (req, res) => {
+  let app = req.body;
+  let bdConnection = bdGestor.createConnection(bdConfig);
+  let keyWordsFormatted = "";
+  for (var key in app.apptags) {
+    keyWordsFormatted += app.apptags[key] + "|";
+  }
+  keyWordsFormatted = keyWordsFormatted.slice(0, keyWordsFormatted.length - 1);
+
+  bdConnection.connect((error) => {
+    if (error) {
+      bdConnection.end();
+      res.sendStatus(500);
+      res.end();
+    } else {
+      console.log(
+        "------------------------------------------------------------------\n[+] Insertando datos en BD..."
+      );
+      console.log(req.body);
+      sqlQuery = `INSERT INTO \`apps\` VALUES(NULL,"${app.appname}","${app.appautor}","${app.appdescription}",0,"","${keyWordsFormatted}","${app.appmirror}","")`;
+      bdConnection.query(sqlQuery, (error) => {
+        if (error) {
+          bdConnection.end();
+          res.sendStatus(500);
+          res.end();
+          console.log("[ERROR] Error al insertar datos en BD.");
+          console.log(error);
+          console.log(
+            "------------------------------------------------------------------"
+          );
+        } else {
+          bdConnection.end();
+          res.sendStatus(200);
+          res.end();
+          console.log("[+] Datos insertados con exito en BD.");
+          console.log(
+            "------------------------------------------------------------------"
+          );
         }
       });
     }
