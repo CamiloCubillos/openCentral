@@ -400,3 +400,49 @@ class OCNodeValidation_verifyPassword extends OCNode {
     return response;
   }
 }
+
+// Hashing implementations
+
+class PatterFinder {
+  constructor() {
+    this._x = 42;
+    this._p = 76150601603564519;
+  }
+
+  getHash(string) {
+    let hash = 0;
+    for (let i = 0; i < string.length; i++) {
+      hash += (string.charCodeAt(i) * this._x ** i) % this._p;
+    }
+    return hash;
+  }
+
+  preComputeHashes(T, P) {
+    let hashes = [];
+    hashes.unshift(this.getHash(T.slice(T.length - P.length, T.length)));
+    let y = 1;
+    for (let i = 1; i <= P.length; i++) {
+      y = (y * this._x) % this._p;
+    }
+    for (let i = T.length - P.length - 1; i >= 0; i--) {
+      hashes.unshift(
+        (this._x * hashes[0] +
+          T.charCodeAt(i) -
+          y * T.charCodeAt(i + P.length)) %
+          this._p
+      );
+    }
+    return hashes;
+  }
+
+  contains(T, P) {
+    let hashes = this.preComputeHashes(T, P);
+    let patternHash = this.getHash(P);
+    for (let i = 0; i < hashes.length; i++) {
+      if (hashes[i] == patternHash) {
+        return true;
+      }
+    }
+    return false;
+  }
+}

@@ -45,7 +45,7 @@ function checkValues() {
   ];
 
   node_input_description.children = [
-    new OCNodeValidation_len(1, 250, input_description.value),
+    new OCNodeValidation_len(1, 1000, input_description.value),
     new OCNodeValidation_emptiness(input_description.value),
   ];
 }
