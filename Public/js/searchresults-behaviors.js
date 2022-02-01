@@ -58,7 +58,6 @@ function renderResultCards(
 
   if (data) {
     for (let i = 0; i < data.length; i++) {
-      console.log("RENDERING: " + data[i].nombre);
       let resultCard = ` <div class="result-card col-12 d-flex flex-row  my-3 bg-light border-bottom border-5 border-dark shadow">
                           <div class="col-4">
                             <img src="img/test-icon.png" class="result-card__icon p-2">

@@ -23,6 +23,7 @@ class OCSorting {
       also validates it beforehand with the validateArrayAndObject method */
 
   sortByRelevance(array, searchKey) {
+    let pf = new OCPatternFinder();
     let exactNameFoundApps = [];
     let nameFoundApps = [];
     let exactAuthorFoundApps = [];
@@ -36,13 +37,15 @@ class OCSorting {
         exactNameFoundApps.push(array[index]);
       } else if (array[index].autor.toLowerCase() == searchKey) {
         exactAuthorFoundApps.push(array[index]);
-      } else if (array[index].nombre.toLowerCase().includes(searchKey)) {
+      } else if (pf.contains(array[index].nombre.toLowerCase(), searchKey)) {
         nameFoundApps.push(array[index]);
-      } else if (array[index].autor.toLowerCase().includes(searchKey)) {
+      } else if (pf.contains(array[index].autor.toLowerCase(), searchKey)) {
         authorFoundApps.push(array[index]);
-      } else if (array[index].descripcion.toLowerCase().includes(searchKey)) {
+      } else if (
+        pf.contains(array[index].descripcion.toLowerCase(), searchKey)
+      ) {
         descriptionFoundApps.push(array[index]);
-      } else if (array[index].keywords.toLowerCase().includes(searchKey)) {
+      } else if (pf.contains(array[index].keywords.toLowerCase(), searchKey)) {
         keyWordFoundApps.push(array[index]);
       }
     }

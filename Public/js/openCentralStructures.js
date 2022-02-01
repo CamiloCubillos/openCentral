@@ -403,9 +403,9 @@ class OCNodeValidation_verifyPassword extends OCNode {
 
 // Hashing implementations
 
-class PatterFinder {
+class OCPatternFinder {
   constructor() {
-    this._x = 42;
+    this._x = 1;
     this._p = 76150601603564519;
   }
 
