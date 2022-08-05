@@ -9,7 +9,7 @@ let bdConfig = {
   host: "localhost",
   database: "bgu8bsc5k7tcemc6ycq7",
   user: "root",
-  password: "Marioloco456",
+  password: "---",
 };
 
 // Middlewares
